@@ -1,19 +1,20 @@
-function ProductCard({product, addToCart}) {
+function ProductCard({ product, cart=[], addToCart }) {
+  const inCart = cart.find(item => item.id === product.id);
 
-    return(
+  return (
+    <div className="card">
+      <img src={product.image} alt={product.title} />
+      <h3>{product.title}</h3>
+      {/* <p>{product.description}</p> */}
+      <p>₹ {product.price}</p>
 
-        <div className="card">
-            <div className="image-container">
-                <img src={product.image} alt={product.title} />
-            </div>
-            
-            <h3>{product.title}</h3>
-            <p>Rs. {product.price}</p>
-            <button onClick={()=> addToCart(product)} >Add to Cart</button>
-
-
-        </div>
-    )
-
+      {inCart ? (
+        <button className="remove-btn">Remove from Cart</button>
+      ) : (
+        <button onClick={() => addToCart(product)}>Add to Cart</button>
+      )}
+    </div>
+  );
 }
+
 export default ProductCard;

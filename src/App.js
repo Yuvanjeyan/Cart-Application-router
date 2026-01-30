@@ -1,66 +1,52 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Route, Routes } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
-import ProductList from "./components/ProductList";
-import CartModal from "./components/CartModal";
-// import ProductCard from "./components/ProductCard";
+import Products from "./pages/Products";
+import Cart from "./pages/Cart";
 
 import './App.css';
 
 function App() {
 
-  //store the products data
-  const [products, setProducts] = useState([]);
-
   //store the cart items
   const [cart, setCart] = useState([]);
 
-  //store the modal visibility state
-  const [isCartOpen, setIsCartOpen] = useState(false);
-
-  //fetch products data from the API
-
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then(res => res.json())
-      .then(data => setProducts(data))
-  },[])
-
-  //function to add products to the cart
-
-  const addToCart = (products) => {
-    const exist = cart.find(item => item.id === products.id);
-
-    if (exist) {
+  const addToCArt = (product) => {
+    const exist = cart.find(item=> item.id === product.id);
+    if(exist){
       alert("Item already added to the cart");
     }
-    else {
-      setCart([
-        ...cart,
-        products
-      ])
+    else{
+      setCart([...cart, {...product, quantity: 1}])
     }
   }
 
-  //function to remove products from the cart
-
-  const removeFromCart = (id) => {
-    setCart(cart.filter(item => item.id !== id));
+  const removeFromCart = (id)=>{
+    setCart(cart.filter(item=> item.id !== id));
   }
 
-  return (
-    <div>
-      <Navbar cartCount={cart.length} openCart={() => setIsCartOpen(true)} />
-      <ProductList products={products} addToCart={addToCart} />
-      {isCartOpen && (
-        <CartModal
-          cart={cart}
-          closeModal={() => setIsCartOpen(false)}
-          removeFromCart={removeFromCart}
-        />
-      )}
+  const increaseQty = (id)=>{
+    setCart(cart.map(item=>
+      item.id === id ? {...item, quantity: item.quantity + 1} : item
+    ))
+  }
 
-    </div>
+  const decreaseQty = (id)=>{
+    setCart(cart.map(item=>
+      item.id===id && item.quantity > 1 ? {
+        ...item,quantity: item.quantity - 1
+      } : item
+    ))
+  }
+  return(
+    <>
+      <Navbar cartCount={cart.length}/>
+      <Routes>
+        <Route path="/" element={<Products addToCart={addToCArt}/>}/>
+        <Route path="/cart" element={<Cart cart={cart} removeFromCart={removeFromCart} increaseQty={increaseQty} decreaseQty={decreaseQty}/>}/>
+      </Routes>
+    </>
   )
 
 }

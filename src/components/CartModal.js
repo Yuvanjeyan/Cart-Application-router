@@ -1,8 +1,14 @@
-function CartModal({ cart, closeModal, removeFromCart }) {
+function CartModal({
+  cart,
+  closeModal,
+  removeFromCart,
+  increaseQty,
+  decreaseQty
+}) {
   return (
     <div className="modal-backdrop">
       <div className="modal">
-        <h2 style={{ fontFamily: '"Nosifer", serif', fontWeight: 200, fontStyle: 'normal' }}>Cart Items</h2>
+        <h2>Cart Items</h2>
 
         {cart.length === 0 && <p>No items in the cart</p>}
 
@@ -10,8 +16,18 @@ function CartModal({ cart, closeModal, removeFromCart }) {
           {cart.map((item) => (
             <div key={item.id} className="cart-row">
               <img src={item.image} alt={item.title} />
+
               <span className="cart-title">{item.title}</span>
+
               <span className="cart-price">₹ {item.price}</span>
+
+              {/* Quantity controls */}
+              <div className="qty-controls">
+                <button onClick={() => decreaseQty(item.id)}>-</button>
+                <span>{item.quantity}</span>
+                <button onClick={() => increaseQty(item.id)}>+</button>
+              </div>
+
               <button
                 className="btn-remove-cart-item"
                 onClick={() => removeFromCart(item.id)}
