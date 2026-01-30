@@ -49,9 +49,6 @@ The app supports quantity management, dynamic price calculation, and discount ha
 
 https://fakestoreapi.com/products
 
-yaml
-Copy code
-
 ---
 
 ## 📂 Project Structure
@@ -70,3 +67,9 @@ Copy code
 - Discount logic
 - Client-side routing with React Router
 - Responsive UI using CSS Grid & Flexbox
+
+---
+
+## 🔗 Deployment URL
+
+https://cart-router-application.netlify.app/
